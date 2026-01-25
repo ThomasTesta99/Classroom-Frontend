@@ -37,13 +37,13 @@ const Create = () => {
             status: "active",
             name: "",
             description: "",
-            subjectId: undefined as unknown as number, // or make subjectId optional/coerced in schema
+            subjectId: 0,
             teacherId: "",
-            capacity: undefined,
+            capacity: 1,
             bannerUrl: "",
             bannerCldPubId: "",
-            inviteCode: undefined,
-            schedules: undefined,
+            inviteCode: 'undefined',
+            schedules: [],
         },
     });
 
