@@ -38,7 +38,7 @@ const Create = () => {
 
     const {
         handleSubmit,
-        formState: { isSubmitting },
+        formState: { isSubmitting, errors },
         control,
     } = form;
 
@@ -130,7 +130,9 @@ const Create = () => {
                                                 />
                                             </FormControl>
                                             <FormMessage />
-                                            {error.bannerCldPubId && !.}
+                                            {errors.bannerCldPubId && !errors.bannerUrl && (
+                                                <p className="text-destructive text-sm">{errors.bannerCldPubId.message?.toString()}</p>
+                                            )}
                                         </FormItem>
                                     )}
                                 />
