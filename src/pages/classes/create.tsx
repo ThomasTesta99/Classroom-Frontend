@@ -81,21 +81,6 @@ const Create = () => {
 
     const bannerPublicId = form.watch('bannerCldPubId');
     
-    const setBannerImage = (file, field) => {
-        if(file){
-            field.onChange(file.url);
-            form.setValue('bannerCldPubId', file.publicId, {
-                shouldValidate: true, 
-                shouldDirty: true, 
-            });
-        }else{
-            field.onChange('');
-            form.setValue('bannerCldPubId', '', {
-                shouldValidate: true, 
-                shouldDirty: true, 
-            });
-        }
-    }
 
     return (
         <CreateView className="class-view">
@@ -131,7 +116,21 @@ const Create = () => {
                                             <FormControl>
                                                 <UploadWidget 
                                                     value={field.value ? {url : field.value, publicId: bannerPublicId ?? ''} : null}
-                                                    onChange = {(file)=> setBannerImage(file, field)}
+                                                    onChange={(file) => {
+                                                        if (file) {
+                                                        field.onChange(file.url);
+                                                        form.setValue("bannerCldPubId", file.publicId, {
+                                                            shouldValidate: true,
+                                                            shouldDirty: true,
+                                                        });
+                                                        } else {
+                                                        field.onChange("");
+                                                        form.setValue("bannerCldPubId", "", {
+                                                            shouldValidate: true,
+                                                            shouldDirty: true,
+                                                        });
+                                                        }
+                                                    }}
                                                 />
                                             </FormControl>
                                             <FormMessage />
