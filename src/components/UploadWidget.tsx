@@ -3,14 +3,17 @@ import { UploadWidgetValue } from '@/types';
 import { UploadCloud } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react'
 
-const UploadWidget = ({value = null, onChange, disabled = false}) => {
+type UploadWidgetProps = {
+  value?: UploadWidgetValue | null;
+  onChange?: (value: UploadWidgetValue | null) => void;
+  disabled?: boolean;
+};
+
+const UploadWidget = ({value = null, onChange, disabled = false} : UploadWidgetProps) => {
   const [preview, setPreview] = useState<UploadWidgetValue | null>(value);
-  const [deleteToken, setDeleteToken] = useState<string | null>(null);
-  const [isRemoving, setIsRemoving] = useState(false);
 
   useEffect(()  => {
     setPreview(value);
-    if(!value) setDeleteToken(null);
   }, [value]);
 
   useEffect(() => {
@@ -36,7 +39,6 @@ const UploadWidget = ({value = null, onChange, disabled = false}) => {
             publicId: result.info.public_id,
           }
           setPreview(payload);
-          setDeleteToken(result.info.delete_token ?? null);
           onChangeRef.current?.(payload);
         }
       });
@@ -60,13 +62,14 @@ const UploadWidget = ({value = null, onChange, disabled = false}) => {
     if(!disabled) widgetRef.current?.open();
   }
 
-  const removeFromCloudinary = async () => {}
 
 
   return (
     <div className='space-y-2'>
       {preview ? (
-        <div className="upload-preview"></div>
+        <div className="upload-preview">
+          <img src={preview.url} alt="uploaded-file" />
+        </div>
       ): <div className='upload-dropzone' role="button" tabIndex={0} onClick={openWidget} onKeyDown={(event) => {
         if(event.key === "Enter"){
           event.preventDefault();
