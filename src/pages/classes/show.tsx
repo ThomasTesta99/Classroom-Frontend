@@ -5,15 +5,14 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ClassDetails } from '@/types'
 import { useShow } from '@refinedev/core'
-import React from 'react'
+import {AdvancedImage} from "@cloudinary/react"
+import { bannerPhoto } from '@/lib/cloudinary';
 
 const Show = () => {
     const {query} = useShow<ClassDetails>({resource: 'classes'});
 
     const classDetails = query.data?.data;
     const {isLoading, isError} = query;
-
-    console.log(classDetails)
 
     if(isLoading || isError || !classDetails){
         return <ShowView className='class-view class-show'>
@@ -40,6 +39,7 @@ const Show = () => {
         status,
         capacity,
         bannerUrl,
+        bannerCldPubId,
         subject,
         teacher,
         department} = classDetails;
@@ -49,7 +49,12 @@ const Show = () => {
                 <ShowViewHeader resource='classes' title="Class Details"/>
 
                 <div className="banner">
-                    {bannerUrl ? <p>Render Cloudinary advanced image</p> : <div className='placeholder'/>}
+                    {bannerUrl ? 
+                        (
+                            <AdvancedImage alt="Class Banner" cldImg={bannerPhoto(bannerCldPubId ?? "", name)}/>
+                        )
+                        : <div className='placeholder'/>
+                    }
                 </div>
 
                 <Card className="details-card">
@@ -61,7 +66,7 @@ const Show = () => {
 
                         <div>
                             <Badge variant="outline">{capacity} spots</Badge>
-                            <Badge variant={status === "active" ? 'default' : "secondary"} data-status = {status}>{status.toUpperCase()} </Badge>
+                            <Badge variant={status === "active" ? 'default' : "secondary"} data-status = {status}>{status?.toUpperCase()} </Badge>
                         </div>
                     </div>
 
